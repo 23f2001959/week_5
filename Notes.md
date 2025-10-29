@@ -391,4 +391,236 @@ Dog barks
 
 ---
 
-Would you like me to **add this complete covariance explanation + example** into the **same Generics PDF** (so you’ll have one full Java Generics guide)?
+Perfect 🎯 — let’s focus on **college-exam-level important Java Generic codes** — short, conceptual, and frequently asked in viva or written exams.
+
+Below are the **top 8 must-know programs** on **Generics, Bounded Types, Wildcards, and Covariance** 👇
+
+---
+
+## 🧩 **1️⃣ Generic Class Example**
+
+```java
+class Box<T> {
+    private T value;
+
+    public void setValue(T value) {
+        this.value = value;
+    }
+
+    public T getValue() {
+        return value;
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Box<Integer> intBox = new Box<>();
+        intBox.setValue(10);
+        System.out.println("Integer value: " + intBox.getValue());
+
+        Box<String> strBox = new Box<>();
+        strBox.setValue("Hello");
+        System.out.println("String value: " + strBox.getValue());
+    }
+}
+```
+
+📘 **Concept:** Generic class can handle multiple data types safely.
+
+---
+
+## ⚙️ **2️⃣ Generic Method Example**
+
+```java
+class GenericMethodDemo {
+    public static <T> void printArray(T[] array) {
+        for (T element : array)
+            System.out.print(element + " ");
+        System.out.println();
+    }
+
+    public static void main(String[] args) {
+        Integer[] intArr = {1, 2, 3, 4};
+        String[] strArr = {"A", "B", "C"};
+
+        printArray(intArr);
+        printArray(strArr);
+    }
+}
+```
+
+📘 **Concept:** Method works with any type using `<T>` before return type.
+
+---
+
+## 🔒 **3️⃣ Bounded Type Example (`extends`)**
+
+```java
+class Calculator<T extends Number> {
+    private T num1, num2;
+
+    public Calculator(T num1, T num2) {
+        this.num1 = num1;
+        this.num2 = num2;
+    }
+
+    public double add() {
+        return num1.doubleValue() + num2.doubleValue();
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Calculator<Integer> c1 = new Calculator<>(10, 20);
+        Calculator<Double> c2 = new Calculator<>(5.5, 6.5);
+
+        System.out.println("Sum1: " + c1.add());
+        System.out.println("Sum2: " + c2.add());
+    }
+}
+```
+
+📘 **Concept:** `T extends Number` → restricts to numeric types only.
+
+---
+
+## 🪄 **4️⃣ Wildcard Example (`?`)**
+
+```java
+import java.util.*;
+
+public class WildcardExample {
+    public static void printList(List<?> list) {
+        for (Object obj : list)
+            System.out.print(obj + " ");
+        System.out.println();
+    }
+
+    public static void main(String[] args) {
+        List<Integer> intList = Arrays.asList(1, 2, 3);
+        List<String> strList = Arrays.asList("A", "B", "C");
+        printList(intList);
+        printList(strList);
+    }
+}
+```
+
+📘 **Concept:** `?` allows unknown type — read-only access.
+
+---
+
+## 🧱 **5️⃣ Upper Bound Wildcard (`? extends`)**
+
+```java
+import java.util.*;
+
+public class UpperBoundExample {
+    public static double sumNumbers(List<? extends Number> list) {
+        double sum = 0;
+        for (Number n : list)
+            sum += n.doubleValue();
+        return sum;
+    }
+
+    public static void main(String[] args) {
+        List<Integer> ints = Arrays.asList(10, 20, 30);
+        List<Double> doubles = Arrays.asList(2.5, 3.5);
+        System.out.println(sumNumbers(ints));
+        System.out.println(sumNumbers(doubles));
+    }
+}
+```
+
+📘 **Concept:** Use `? extends Number` when you only want to **read** data.
+
+---
+
+## ⚡ **6️⃣ Lower Bound Wildcard (`? super`)**
+
+```java
+import java.util.*;
+
+public class LowerBoundExample {
+    public static void addNumbers(List<? super Integer> list) {
+        list.add(10);
+        list.add(20);
+    }
+
+    public static void main(String[] args) {
+        List<Number> nums = new ArrayList<>();
+        addNumbers(nums);
+        System.out.println(nums);
+    }
+}
+```
+
+📘 **Concept:** Use `? super T` when you want to **write** data of type `T`.
+
+---
+
+## 🧠 **7️⃣ Covariance Example (Using Wildcards)**
+
+```java
+import java.util.*;
+
+class Animal { void sound() { System.out.println("Animal sound"); } }
+class Dog extends Animal { void sound() { System.out.println("Dog barks"); } }
+
+public class CovarianceExample {
+    static void makeSound(List<? extends Animal> list) {
+        for (Animal a : list)
+            a.sound();
+    }
+
+    public static void main(String[] args) {
+        List<Dog> dogs = Arrays.asList(new Dog(), new Dog());
+        makeSound(dogs); // Covariant using ? extends
+    }
+}
+```
+
+📘 **Concept:** `? extends` allows reading from a subtype list (`List<Dog>` treated as `List<? extends Animal>`).
+
+---
+
+## 🧮 **8️⃣ Generic Interface Example**
+
+```java
+interface Container<T> {
+    void show(T item);
+}
+
+class Display<T> implements Container<T> {
+    public void show(T item) {
+        System.out.println("Item: " + item);
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Display<String> d = new Display<>();
+        d.show("Generics Interface Example");
+    }
+}
+```
+
+📘 **Concept:** Interfaces can also be generic.
+
+---
+
+## ✅ **Exam Tip Summary**
+
+| No. | Concept            | Must Know For Exam                |
+| --- | ------------------ | --------------------------------- |
+| 1   | Generic Class      | Basic syntax & use of `<T>`       |
+| 2   | Generic Method     | Type parameter before return type |
+| 3   | Bounded Type       | `<T extends ClassName>`           |
+| 4   | Wildcard `?`       | Used for unknown types            |
+| 5   | `? extends`        | For reading (covariance)          |
+| 6   | `? super`          | For writing (contravariance)      |
+| 7   | Covariance Example | With `List<? extends Animal>`     |
+| 8   | Generic Interface  | Common in theory questions        |
+
+---
+
+
